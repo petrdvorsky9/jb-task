@@ -14,3 +14,4 @@ Solution steps:
 
 
 ## Task 2: Sale analysis – revenue decline in ROW region
+Link to the report - https://docs.google.com/spreadsheets/d/1-FjZ9-o-kQuEVCivIGKavUeA2DhFwQamJK1RoSMJvFA/edit?usp=sharing
