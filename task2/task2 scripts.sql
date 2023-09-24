@@ -1,7 +1,8 @@
 /* Detailed data */
 SELECT 
 	*,
-	SalesUsd2019H1 - SalesUsd2018H1 as diff
+	SalesUSD2019H1 - SalesUSD2018H1 as diffUSD,
+	SalesCUR2019H1 - SalesCUR2018H1 as diffCUR
 FROM (
 	SELECT
 	month,
@@ -10,8 +11,10 @@ FROM (
 	name,
 	product_family,
 	price,
-	ROUND(SUM(SalesUsd2018H1), 2) as SalesUsd2018H1,
-	ROUND(SUM(SalesUsd2019H1), 2) as SalesUsd2019H1
+	ROUND(SUM(SalesUSD2018H1), 2) as SalesUSD2018H1,
+	ROUND(SUM(SalesUSD2019H1), 2) as SalesUSD2019H1,
+	ROUND(SUM(SalesCUR2018H1), 2) as SalesCUR2018H1,
+	ROUND(SUM(SalesCUR2019H1), 2) as SalesCUR2019H1
 	FROM (
 		SELECT 
 			FORMAT(CONVERT(DATE, ord.exec_date, 120), 'MM') as month,
@@ -21,8 +24,10 @@ FROM (
 			prod.name,
 			prod.product_family,
 			prod.price,
-		  	SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUsd2018H1,
-		  	SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUsd2019H1
+		  	SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUSD2018H1,
+		  	SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUSD2019H1,
+		  	SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total ELSE 0.00 END) as SalesCUR2018H1,
+			SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) as SalesCUR2019H1
 		FROM dea.sales.Orders ord
 			JOIN dea.sales.OrderItems ordItm ON ord.id = ordItm.order_id
 			JOIN dea.sales.Customer cust ON ord.customer = cust.id
@@ -43,6 +48,7 @@ FROM (
 	price
 )b
 
+--
 
 /* Aggregated data USD*/
 SELECT cou.iso,
@@ -84,8 +90,10 @@ SELECT cou.iso,
   SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) as Sales2019H1,
   SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUsd2018H1,
   SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as SalesUsd2019H1,
-  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) - SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total ELSE 0.00 END) as diff,
-  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) / SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total ELSE 0.00 END) as YoYratio
+  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) - SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total ELSE 0.00 END) as diffCUR,
+  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) - SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as diffUSD,
+  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total ELSE 0.00 END) / SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total ELSE 0.00 END) as YoYratioCUR,
+  SUM(CASE WHEN YEAR(ord.exec_date) = 2019 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) / SUM(CASE WHEN YEAR(ord.exec_date) = 2018 THEN ordItm.amount_total / exRate.rate ELSE 0.00 END) as YoYratioUSD
 FROM dea.sales.Orders ord
 JOIN dea.sales.OrderItems ordItm ON ord.id = ordItm.order_id
 JOIN dea.sales.Customer cust ON ord.customer = cust.id
@@ -96,9 +104,6 @@ WHERE ord.is_paid = 1 -- Only paid orders, exclude pre-orders
   AND YEAR(ord.exec_date) IN (2018, 2019) -- Year 2018, 2019
   AND MONTH(ord.exec_date) BETWEEN 1 AND 6 -- H1
   AND cou.region = 'ROW'
-  AND cou.iso = 'DE'
+--  AND cou.iso = 'DE'
 GROUP BY cou.iso
-ORDER BY YoYratio desc	
-
-
-select * from dea.sales.ExchangeRate
+ORDER BY YoYratioCUR desc
