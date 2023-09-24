@@ -1,8 +1,9 @@
 # JetBrains Data Engineering & Analysis Test Assignment
 
 ## Technologies & Software used
-DBeaver used for SQL Server client
-Python 3 used for transformation Settlement batch reports
+- DBeaver used for SQL Server client
+- Python 3 used for transformation Settlement batch reports
+- Google Sheets used for data visualisation
 
 ## Task 1: Data quality – the difference between NetSuite ERP and payment gateway
 Solution steps:
