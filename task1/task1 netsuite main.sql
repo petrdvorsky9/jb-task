@@ -1,34 +1,4 @@
-/* Task1 Netsuite main */
---SELECT
---	SUM(AMOUNT_FOREIGN)
-----	* 
---FROM dea.netsuite.TRANSACTIONS t
---LEFT JOIN dea.netsuite.TRANSACTION_LINES tl ON t.TRANSACTION_ID = tl.TRANSACTION_ID
---LEFT JOIN dea.netsuite.ENTITY ent ON tl.COMPANY_ID = ent.ENTITY_ID
---LEFT JOIN dea.netsuite.SUBSIDIARIES sub ON tl.SUBSIDIARY_ID = sub.SUBSIDIARY_ID
---LEFT JOIN dea.netsuite.CURRENCIES cur ON t.CURRENCY_ID  = cur.CURRENCY_ID
---LEFT JOIN dea.netsuite.ACCOUNTS acc ON tl.ACCOUNT_ID = acc.ACCOUNT_ID
---WHERE 
---	t.BATCH_NUMBER = 139
---	AND acc.ACCOUNTNUMBER IN (315720, 548201)
---	AND cur.SYMBOL = 'GBP'
---	AND tl.AMOUNT_FOREIGN >= 0
---	AND t.TRANSACTION_TYPE IN ('Customer Deposit', 'Payment')
---	AND tl.TRANSACTION_LINE_ID = 1
---	
---
---select * from dea.netsuite.TRANSACTIONS	
---select * from dea.netsuite.TRANSACTION_LINES
---select * from dea.netsuite.TRANSACTIONS
---select * from dea.netsuite.SUBSIDIARIES
---select * from dea.netsuite.CURRENCIES
---select * from dea.netsuite.ACCOUNTS
---select * from dea.netsuite.ENTITY
-
-
-
---
-
+/* Task1 Netsuite investigation */
 SELECT
 	x.ACCOUNTNUMBER,
 	x.NAME,
@@ -77,30 +47,3 @@ FROM (
 		x.NAME,
 		x.BATCH_NUMBER,
 		x.SYMBOL
---
-		
-
-		
--- nejnovejsi idea
-WITH netsuite AS (
-	SELECT
-		t.ORDER_REF
-	FROM dea.netsuite.TRANSACTION_LINES tl
-	LEFT JOIN dea.netsuite.TRANSACTIONS t ON tl.TRANSACTION_ID = t.TRANSACTION_ID
-),
-
-settlements AS (
-	SELECT 
-		ORDER_REF
-	FROM dbfive.dbo.Settlement
-)
-
-SELECT 
-	* 
-FROM settlements s
-INNER JOIN netsuite n ON s.ORDER_REF = n.ORDER_REF
-		
-		
-		
-		
-		
