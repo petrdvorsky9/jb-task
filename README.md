@@ -17,7 +17,7 @@ Solution steps:
 ](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20-%20List%20of%20ORDER_REF%20differences.sql) you can find all partial queries tied together using WITH clause and merged together using UNION ALL and saved to separated table called _dbfive.dbo.ns_sett_diff_. I admit that creation of new table just for one-off task is not the ideal solution, but in this case, it provided me with a higher speed of further work with the data.
 6. The last step was to get more detailed information about all the different orders and this query is describing differences and includes all the accounting relevant columns [task1 - final query.sql](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20-%20final%20query.sql) .
 
-Note: It is necessary to apply filters on the query to get all the relevant data about a particular account but I think it is more for visualization tool (Tableau or PowerBI) which can handle large data like this this.
+Note: It is necessary to apply filters on the query to get all the relevant data about a particular account but in my honest opinion it is more for further work with visualization tools (Tableau or PowerBI) which can handle large data like this.
 
 
 
