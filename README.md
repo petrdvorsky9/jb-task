@@ -14,12 +14,12 @@ Solution steps:
 4. After creation of the Settlement table, I Investigated Netsuite data (Aggregated data) and I was looking for the right filtration which will return same result as it is in table in task description. I compared aggregated data from Netsuite and Settlements reports to get correct numbers according to the task description. In the following queries are samples of my aggragated data insights for both Netsuite and Settlements reports [task1 settlements main.sql](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20settlements%20main.sql) , [task1 netsuite main.sql
 ](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20netsuite%20main.sql) . I admit, it was not easy without any knowledge of related business. I found the way how to correctly filter data and the sample of the aggregated queries can be seen in [task1 - Aggregated queries with correct filters.sql](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20-%20Aggregated%20queries%20with%20correct%20filters.sql)
 5. The next step was to change the level of detail from aggregated data to order level. In the following script [task1 - List of ORDER_REF differences.sql
-](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20-%20List%20of%20ORDER_REF%20differences.sql) you can find all partial queries tied together using WITH clause and merged together using UNION ALL and saved to separated table called _dbfive.dbo.netsuite_settlement_differences_. I admit that the creation of a new table just for the one-off task is not the ideal solution, but in this case, it could provide a higher speed of further work with the data.
+](https://github.com/petrdvorsky9/jb-task/blob/main/task1/task1%20-%20List%20of%20ORDER_REF%20differences.sql) you can find all partial queries tied together using WITH clause and merged together using UNION ALL and saved to separated table called _dbfive.dbo.netsuite_settlement_differences_. I admit that the creation of a new table just for the one-off task is not the ideal solution, but in this case, it could provide a higher speed of further work with the data. In this step I also added column FLAG which indicates whether the order is in Netsuite, Settlements reports or there are different prices.
 6. Data are ready in the table _dbfive.dbo.netsuite_settlement_differences_ and can be queried.
 
-Note: It is necessary to apply filters on the table _dbfive.dbo.netsuite_settlement_differences_ to get all the relevant data about a particular account but in my honest opinion it is more for further work with visualization tools (Tableau or PowerBI) that allow user to intuitively filter tha data and which can handle large data like this.
-
-
+Note: 
+1. It is necessary to apply filters on the table _dbfive.dbo.netsuite_settlement_differences_ to get all the relevant data about a particular account but in my honest opinion it is more for further work with visualization tools (Tableau or PowerBI) that allow user to intuitively filter tha data and which can handle large data like this.
+2. I found an error between Netsuite and Settlements where orders have different prices. In settlements were Net prices, in Netsuite were Gross prices. 
 
 
 ## Task 2: Sale analysis – revenue decline in ROW region
