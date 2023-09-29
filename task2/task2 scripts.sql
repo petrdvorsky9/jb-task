@@ -71,14 +71,22 @@ ORDER BY ratio desc
 ;
 
 /* FX rate */
--- 0.826132
--- 0.8852
+-- AVG 2018H1 = 0.826132
+-- AVG 2019H1 = 0.8852
 select 
 	AVG(rate)
 from dea.sales.ExchangeRate
 where currency = 'EUR'
 	and month(date) in (1,2,3,4,5,6)
 	and year(date) = 2018
+	
+select 
+	AVG(rate)
+from dea.sales.ExchangeRate
+where currency = 'EUR'
+	and month(date) in (1,2,3,4,5,6)
+	and year(date) = 2019
+	
 
 /* Aggregated data original curr*/
 SELECT cou.iso,
