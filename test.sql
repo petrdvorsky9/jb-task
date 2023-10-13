@@ -8,6 +8,3 @@ GO
 DROP TABLE IF EXISTS dbfive.dbo.NS;
 DROP TABLE IF EXISTS dbfive.dbo.PAYMENT;
 GO
-
--- zmenovy komentar
-select * from hovno
